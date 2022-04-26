@@ -3,9 +3,8 @@
 ```
     title    : My Blog :=)
     author   : 
-    name     : twen_Yee
+    name     : baijiu.yec
     email    : joneyee22@qq.com
-    weibo    : @twen_Yee
     instagram: @twentwo
 ```
 
