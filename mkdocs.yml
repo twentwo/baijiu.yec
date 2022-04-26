@@ -86,6 +86,12 @@ nav:
   - Home:
 #      - blog/index.md
       - index.md
+      - 2016:
+          - blog/2016/gogs-replace-gitlab-02.md
+          - blog/2016/gogs-replace-gitlab-01.md
+          - blog/2016/yum-install-mysql.md
+          - blog/2016/nginx-on-centos6-02.md
+          - blog/2016/nginx-on-centos6-01.md
       - 2015:
           - blog/2015/httpsqs-02.md
           - blog/2015/httpsqs-01.md
