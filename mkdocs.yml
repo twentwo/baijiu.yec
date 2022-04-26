@@ -51,8 +51,8 @@ markdown_extensions:
       emoji_generator: !!python/name:materialx.emoji.to_svg
   - pymdownx.highlight:
       use_pygments: true
-      auto_title: true
-      linenums: true
+#      auto_title: true
+#      linenums: true
       linenums_style: pymdownx-inline
       anchor_linenums: true
   - pymdownx.inlinehilite
