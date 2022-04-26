@@ -1,4 +1,98 @@
+# Project information
 site_name: baijiu.yec's blog
 site_url: https://twentwo.github.io/baijiu.yec/
+site_author: baijiu.yec
+site_description: >-
+  Fight!
+
+# Repository
+repo_name: twentwo/baijiu.yec
+repo_url: https://github.com/twentwo/baijiu.yec
+
+# Configuration
 theme:
   name: material
+  custom_dir: overrides
+  features:
+    - content.code.annotate
+    - navigation.indexes
+    - navigation.sections
+    - navigation.tabs
+    - navigation.top
+    - navigation.tracking
+    - toc.follow
+
+# Plugins
+plugins:
+  - search
+
+# Extensions
+markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - meta
+  - md_in_html
+  - toc:
+      permalink: true
+  - tables
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem
+  - pymdownx.caret
+  - pymdownx.mark
+  - pymdownx.tilde
+  - pymdownx.critic
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - pymdownx.highlight:
+      use_pygments: true
+      auto_title: true
+      linenums: true
+      linenums_style: pymdownx-inline
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.keys
+  - pymdownx.smartsymbols
+  - pymdownx.snippets
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+      clickable_checkbox: false
+
+extra_javascript:
+  # mathjax
+  - javascripts/mathjax.js
+#  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - javascripts/npm/mathjax@3/es5/tex-mml-chtml.js
+  # highlight
+#  - javascripts/ajax/libs/highlight.js/10.7.2/highlight.min.js
+#  - javascripts/highlight.js
+#extra_css:
+#  - stylesheets/ajax/libs/highlight.js/10.7.2/styles/default.min.css
+
+# Page tree
+nav:
+  - Home:
+#      - blog/index.md
+      - index.md
+      - 2015:
+          - blog/2015/httpsqs-02.md
+          - blog/2015/httpsqs-01.md
+          - blog/2015/kestrel-03.md
+          - blog/2015/kestrel-02.md
+          - blog/2015/kestrel-01.md
+          - blog/2015/gearman-03.md
+          - blog/2015/gearman-02.md
+          - blog/2015/gearman-01.md
+          - blog/2015/maven-remote-deploy-jboss.md
