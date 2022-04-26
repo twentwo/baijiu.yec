@@ -12,7 +12,7 @@
 ## **2022-04-26 18:23**
 #################################
 
-upgrade to [https://squidfunk.github.io/mkdocs-material/](https://squidfunk.github.io/mkdocs-material/)
+migrate to [https://squidfunk.github.io/mkdocs-material/](https://squidfunk.github.io/mkdocs-material/)
 
 ## **2016-03-02 23:11**
 #################################
