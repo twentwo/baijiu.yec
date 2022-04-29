@@ -1,8 +1,14 @@
+---
+tags:
+- Maven
+- Jboss
+---
+
 # Maven 远程部署项目到jboss-as-7
 
 :material-clock-time-three-outline: 2015/08/14 22:07
 
-__最近在看许晓斌（Juven Xu）编写的《Maven实战》，书中提到Maven远程部署项目到服务器。刚好最近做的项目在测试阶段，不过测试环境用的服务器是Jboss（jboss-as-7.1.0.Final），遂开始折腾。以jboss-as-7.1.1.Final为例。__
+最近在看许晓斌（Juven Xu）编写的《Maven实战》，书中提到Maven远程部署项目到服务器。刚好最近做的项目在测试阶段，不过测试环境用的服务器是Jboss（jboss-as-7.1.0.Final），遂开始折腾。以jboss-as-7.1.1.Final为例。
 
 ----------
 
@@ -200,5 +206,5 @@ Could not connect to remote://serverIP:9999. The connection timed out...
 　　
 
 
-[1]: https://static.oschina.net/uploads/img/201508/14221049_4jOo.png
-[2]: https://static.oschina.net/uploads/img/201508/14221138_bHL9.jpg
+[1]: maven-remote-deploy-jboss/1401213823.png
+[2]: maven-remote-deploy-jboss/1485886833.jpg

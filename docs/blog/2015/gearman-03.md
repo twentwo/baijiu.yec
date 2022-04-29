@@ -1,3 +1,9 @@
+---
+tags:
+- PHP
+- Gearman
+---
+
 # Gearman（三）
 
 :material-clock-time-three-outline: 2015-09-06 15:29
@@ -187,4 +193,4 @@ $cfgServers[$i]['name'] = '192.168.56.101';
 [3]: http://www.apachehaus.com/cgi-bin/download.plx
 [4]: http://pear.php.net/package/Net_Gearman/download
 [5]: http://pear.php.net/go-pear.phar
-[6]:https://oscimg.oschina.net/oscnet/0ae98f6bd9014a63d1fb2a96d059026e9a1.jpg
+[6]: gearman-03/4210991240.png

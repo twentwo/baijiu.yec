@@ -24,6 +24,7 @@ theme:
 
 # Plugins
 plugins:
+  - tags
   - search
 
 # Extensions

@@ -1,3 +1,9 @@
+---
+tags:
+- Nginx
+- Centos
+---
+
 # Nginx On Centos6（一）
 
 :material-clock-time-three-outline: 2016-02-09 23:46:00

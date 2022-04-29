@@ -1,3 +1,9 @@
+---
+tags:
+- Gogs
+- Gitlab
+---
+
 # 用Gogs替代Gitlab（一）
 
 :material-clock-time-three-outline: 2016-02-09 23:49:00

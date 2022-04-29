@@ -1,3 +1,9 @@
+---
+tags:
+- Java
+- Gearman
+---
+
 # Gearman（一）
 
 :material-clock-time-three-outline:  2015-09-01 15:56
@@ -175,7 +181,7 @@ gearmand --verbose=INFO -d
 启动gearmand守护，并打印level为INFO的log。gearmand的options可通过`gearmand -h`查看。
 
 
-[1]:https://oscimg.oschina.net/oscnet/e0561d57147aae6892acec2100f166029b8.jpg
+[1]: gearman-01/4050994851.png
 [2]: http://gearman.org/
 [3]: https://code.google.com/p/java-gearman-service/
 [4]: https://github.com/gearman/java-service

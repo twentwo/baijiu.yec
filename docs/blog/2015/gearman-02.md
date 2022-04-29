@@ -1,3 +1,9 @@
+---
+tags:
+- Java
+- Gearman
+---
+
 # Gearman（二）
 
 :material-clock-time-three-outline: 2015-09-06 10:49
