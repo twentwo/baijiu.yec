@@ -88,6 +88,19 @@ nav:
 #      - blog/index.md
       - index.md
       - 2016:
+          - blog/2016/git-flow.md
+          - blog/2016/tomcat-01.md
+          - blog/2016/db-isolation-level-spring-transaction.md
+          - blog/2016/thinkpad-t530-linux-mint.md
+          - blog/2016/shiro-06.md
+          - blog/2016/shiro-05.md
+          - blog/2016/shiro-04.md
+          - blog/2016/shiro-03.md
+          - blog/2016/shiro-02.md
+          - blog/2016/shiro-01.md
+          - blog/2016/session-sharding-solution.md
+          - blog/2016/taobao-tech-ten-years.md
+          - blog/2016/web-full-stack-engineer.md
           - blog/2016/gogs-replace-gitlab-02.md
           - blog/2016/gogs-replace-gitlab-01.md
           - blog/2016/yum-install-mysql.md
