@@ -87,6 +87,9 @@ nav:
   - Home:
 #      - blog/index.md
       - index.md
+      - 2018:
+          - blog/2018/global-unique-id-generate.md
+          - blog/2018/bean-copier-map-struct.md
       - 2016:
           - blog/2016/git-flow.md
           - blog/2016/tomcat-01.md
