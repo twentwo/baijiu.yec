@@ -2,8 +2,7 @@
 
 ```
     title    : My Blog :=)
-    author   : 
-    name     : baijiu.yec
+    author   : baijiu.yec
     email    : joneyee22@qq.com
     instagram: @twentwo
 ```
