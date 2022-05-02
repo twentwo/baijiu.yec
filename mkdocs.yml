@@ -87,6 +87,8 @@ nav:
   - Home:
 #      - blog/index.md
       - index.md
+      - 2022:
+          - blog/2022/a-disrupt-redis-queue.md
       - 2018:
           - blog/2018/global-unique-id-generate.md
           - blog/2018/bean-copier-map-struct.md
