@@ -88,6 +88,7 @@ nav:
 #      - blog/index.md
       - index.md
       - 2022:
+          - blog/2022/a-strategy-route-framework.md
           - blog/2022/a-disrupt-redis-queue.md
   - Archive:
       - 2018:

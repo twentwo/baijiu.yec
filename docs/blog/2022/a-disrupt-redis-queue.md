@@ -5,7 +5,7 @@ tags:
 - Queue
 ---
 
-# fresno: A Disruptor + Redis Queue
+# Fresno: A Disruptor + Redis Queue
 
 :material-clock-time-three-outline: 2022-05-02 16:07:27
 
