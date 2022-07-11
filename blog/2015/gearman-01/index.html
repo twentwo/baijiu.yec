@@ -1,0 +1,1490 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Fight!">
+      
+      
+        <meta name="author" content="baijiu.yec">
+      
+      
+        <link rel="canonical" href="https://twentwo.github.io/baijiu.yec/blog/2015/gearman-01/">
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.9">
+    
+    
+      
+        <title>Gearman（一） - baijiu.yec's blog</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.1d29e8d0.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.cbb835fc.min.css">
+        
+      
+      
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#gearman" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="baijiu.yec&#39;s blog" class="md-header__button md-logo" aria-label="baijiu.yec's blog" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            baijiu.yec's blog
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Gearman（一）
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/twentwo/baijiu.yec" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    twentwo/baijiu.yec
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        Home
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+
+
+  
+  
+  
+    
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../2018/global-unique-id-generate/" class="md-tabs__link md-tabs__link--active">
+        Archive
+      </a>
+    </li>
+  
+
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../about/" class="md-tabs__link">
+        About
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="baijiu.yec&#39;s blog" class="md-nav__button md-logo" aria-label="baijiu.yec's blog" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    baijiu.yec's blog
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/twentwo/baijiu.yec" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    twentwo/baijiu.yec
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1" type="checkbox" id="__nav_1" >
+      
+      
+      
+        
+          
+            
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../../..">Home</a>
+          
+            <label for="__nav_1">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Home" data-md-level="1">
+        <label class="md-nav__title" for="__nav_1">
+          <span class="md-nav__icon md-icon"></span>
+          Home
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+            
+              
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1_2" type="checkbox" id="__nav_1_2" >
+      
+      
+      
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_1_2">
+          2022
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="2022" data-md-level="2">
+        <label class="md-nav__title" for="__nav_1_2">
+          <span class="md-nav__icon md-icon"></span>
+          2022
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2022/a-strategy-route-framework/" class="md-nav__link">
+        Wula: A Strategy Route Framework
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2022/a-disrupt-redis-queue/" class="md-nav__link">
+        Fresno: A Disruptor + Redis Queue
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
+      
+      
+      
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          Archive
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Archive" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Archive
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_1" type="checkbox" id="__nav_2_1" >
+      
+      
+      
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_2_1">
+          2018
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="2018" data-md-level="2">
+        <label class="md-nav__title" for="__nav_2_1">
+          <span class="md-nav__icon md-icon"></span>
+          2018
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2018/global-unique-id-generate/" class="md-nav__link">
+        全局唯一ID生成
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2018/bean-copier-map-struct/" class="md-nav__link">
+        BeanCopier之MapStruct（一）
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_2" type="checkbox" id="__nav_2_2" >
+      
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_2_2">
+          2016
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="2016" data-md-level="2">
+        <label class="md-nav__title" for="__nav_2_2">
+          <span class="md-nav__icon md-icon"></span>
+          2016
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2016/git-flow/" class="md-nav__link">
+        Git Flow
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2016/tomcat-01/" class="md-nav__link">
+        Tomcat（一）-重定向Web应用程序目录
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2016/db-isolation-level-spring-transaction/" class="md-nav__link">
+        数据库隔离级别和spring事务（一）
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2016/thinkpad-t530-linux-mint/" class="md-nav__link">
+        ThinkPad T530 Linux Mint Start
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2016/shiro-06/" class="md-nav__link">
+        Shiro（六）：缓存机制
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2016/shiro-05/" class="md-nav__link">
+        Shiro（五）：会话管理
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2016/shiro-04/" class="md-nav__link">
+        Shiro（四）：拦截器机制
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2016/shiro-03/" class="md-nav__link">
+        Shiro（三）：授权
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2016/shiro-02/" class="md-nav__link">
+        Shiro（二）：身份验证
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2016/shiro-01/" class="md-nav__link">
+        Shiro（一）：基于资源的权限管理(RBAC)
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2016/session-sharding-solution/" class="md-nav__link">
+        Session共享的解决方案
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2016/taobao-tech-ten-years/" class="md-nav__link">
+        淘宝技术这十年
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2016/web-full-stack-engineer/" class="md-nav__link">
+        Web全栈工程师的自我修养
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2016/gogs-replace-gitlab-02/" class="md-nav__link">
+        用Gogs替代Gitlab（二）
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2016/gogs-replace-gitlab-01/" class="md-nav__link">
+        用Gogs替代Gitlab（一）
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2016/yum-install-mysql/" class="md-nav__link">
+        yum install mysql
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2016/nginx-on-centos6-02/" class="md-nav__link">
+        Nginx On Centos6（二）
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2016/nginx-on-centos6-01/" class="md-nav__link">
+        Nginx On Centos6（一）
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_3" type="checkbox" id="__nav_2_3" checked>
+      
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_2_3">
+          2015
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="2015" data-md-level="2">
+        <label class="md-nav__title" for="__nav_2_3">
+          <span class="md-nav__icon md-icon"></span>
+          2015
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../httpsqs-02/" class="md-nav__link">
+        HTTPSQS（二）
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../httpsqs-01/" class="md-nav__link">
+        HTTPSQS（一）
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kestrel-03/" class="md-nav__link">
+        Kestrel（三）
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kestrel-02/" class="md-nav__link">
+        Kestrel（二）
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kestrel-01/" class="md-nav__link">
+        Kestrel（一）
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gearman-03/" class="md-nav__link">
+        Gearman（三）
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gearman-02/" class="md-nav__link">
+        Gearman（二）
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Gearman（一）
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Gearman（一）
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    简单介绍
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#server" class="md-nav__link">
+    Server安装
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../maven-remote-deploy-jboss/" class="md-nav__link">
+        Maven 远程部署项目到jboss-as-7
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../china-telecom-router-root/" class="md-nav__link">
+        电信路由器上海贝尔E8C GPON HGW（I-240W-Q）-获取超级帐号密码-破解wifi无线上网-二级路由
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+      
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          About
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="About" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          About
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../about/" class="md-nav__link">
+        时光轴
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    简单介绍
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#server" class="md-nav__link">
+    Server安装
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+
+                
+  <a href="https://github.com/twentwo/baijiu.yec/edit/master/docs/blog/2015/gearman-01.md" title="Edit this page" class="md-content__button md-icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
+  </a>
+
+
+  
+
+  <nav class="md-tags" >
+    
+      
+        <span class="md-tag">Java</span>
+      
+    
+      
+        <span class="md-tag">Gearman</span>
+      
+    
+  </nav>
+
+
+
+<h1 id="gearman">Gearman（一）<a class="headerlink" href="#gearman" title="Permanent link">&para;</a></h1>
+<p><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20c4.4 0 8-3.6 8-8s-3.6-8-8-8-8 3.6-8 8 3.6 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10S2 17.5 2 12 6.5 2 12 2m5 9.5V13h-6V7h1.5v4.5H17Z"/></svg></span>  2015-09-01 15:56</p>
+<h2 id="_1">简单介绍<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>Gearman译为“齿轮工”，从字面上看，他的职责就是通过齿轮将不同的组件结合在一起。作为一个任务分发架构，Gearman请求的处理过程涉及三个角色：Client -&gt; Job Server -&gt; Worker。它能够轻松的将前端Client提交的任务通过Job Server分发给后端的空闲的Worker处理。</p>
+<ul>
+<li>Client：请求的发起者，可以是C，PHP，Perl，MySQL UDF等等。</li>
+<li>Job Server：请求的调度者，用来负责协调把Client发出的请求转发给合适的Worker。</li>
+<li>Worker：请求的处理者，可以是C，PHP，Perl等等。</li>
+</ul>
+<p><strong>工作集群示意：</strong></p>
+<p><img alt="cluster.png" src="4050994851.png" /></p>
+<p>详见：<a href="http://gearman.org/">Gearman官网</a></p>
+<hr />
+<h2 id="server">Server安装<a class="headerlink" href="#server" title="Permanent link">&para;</a></h2>
+<p>因为项目后台采用Java，Client和Worker无疑是用Java实现，虽然Gearman并没有这样的限制，而且Client和Worker可以采用不同的语言实现。中间的纽带就是Job Server。</p>
+<p>目前Job Server（gearmand）的java版本有三个。</p>
+<ol>
+<li>官方推荐的<a href="https://code.google.com/p/java-gearman-service/">java-gearman-service</a>，目前Google Code上的release版本是0.6.6。项目已迁移至Github的<a href="https://github.com/gearman/java-service">java-service</a>，没有realease版本，maven上的版本号是0.7.0-SNAPSHOT，不过时间显示已经是两年前了。其中还包括了Client和Worker的客户端API。</li>
+<li><a href="https://launchpad.net/gearman-java">gearman-java</a>官方Download中有提及，gearman-java.jar只包括Worker和Client的API，没有Server。</li>
+<li><a href="http://code.johnewart.net/maven/org/gearman/gearman-server/">gearman-server</a>，目前的版本是0.6.2，里面包括Web Server：Jetty，持久化框架Redis和Postpresql。</li>
+</ol>
+<p>测试时采用了0.6.6版本，直接运行java-gearman-service-0.6.6.jar即可。</p>
+<p>但是gearmand作为Job Server除了安装过程中有一些配置之外，在开发过程中可以说是项目无关的。Client和Worker只需关系Job Server的IP和端口。所以在Linux服务器上安装C版本的Gearmand就可以了。</p>
+<p>下面开始C版本的gearmand安装。</p>
+<ol>
+<li>
+<p>创建/usr/servers，此后我们把软件安装在此目录
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>mkdir -p /usr/servers
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nb">cd</span> /usr/servers
+</code></pre></div></p>
+</li>
+<li>
+<p>下载安装gearmand，最新版在<a href="https://launchpadlibrarian.net/165674261/gearmand-1.1.12.tar.gz">Launchpad</a>，版本号为1.1.12
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>tar -xzvf gearmand-1.1.12.tar.gz
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nb">cd</span> gearmand-1.1.12
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>./configure --enable-debug
+</code></pre></div></p>
+</li>
+</ol>
+<p>执行过程中出现如下错误，原因是本机中缺少依赖包。
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a> checking for cc... no
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a> checking for gcc... no
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a> checking for clang... no
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a> configure: error: in `/usr/servers/gearmand-1.1.12&#39;:
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a> configure: error: no acceptable C compiler found in $PATH
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a> See `config.log&#39; for more details
+</code></pre></div></p>
+<p>注： ./configure的options可通过<code>./configure -help</code>查看。</p>
+<ol>
+<li>安装依赖（本机是centos6.6-DVD1 miniDeskTop版本）
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>yum -y install gcc-c++ boost-devel gperf libevent-devel libuuid-devel uuid-dce uuid-dce-devel uuid-c++ uuid-c++-devel
+</code></pre></div></li>
+</ol>
+<p>待所有依赖安装完成，执行<code>./configure --enable-debug</code>，出现configure结果。
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>---
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>Configuration summary for gearmand version 1.1.12
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>* Installation prefix: /usr/local
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>* System type: unknown-linux-gnu
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>* Host CPU: x86_64
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>* C Compiler: cc -std=gnu99 cc (GCC) 4.4.7 20120313 (Red Hat 4.4.7-16)
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>* C Flags: -H -g -g3 -fno-eliminate-unused-debug-types -fno-omit-frame-pointer -Wno-unknown-pragmas -Wno-pragmas -Wall -Wextra -Wno-attributes -Waddress -Warray-bounds -Wbad-function-cast -Wchar-subscripts -Wcomment -Wfloat-equal -Wformat-security -Wformat=2 -Wformat-y2k -Wlogical-op -Wmissing-field-initializers -Wmissing-noreturn -Wmissing-prototypes -Wnested-externs -Wnormalized=id -Woverride-init -Wpointer-arith -Wpointer-sign -Wredundant-decls -Wshadow -Wsign-compare -Wstrict-overflow=1 -Wswitch-enum -Wundef -funsafe-loop-optimizations -Wclobbered -Wunused -Wunused-variable -Wunused-parameter -Wwrite-strings -fwrapv -pipe -fPIE -pie -Wpacked
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>* C++ Compiler: c++ c++ (GCC) 4.4.7 20120313 (Red Hat 4.4.7-16)
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>* C++ Flags: -H -g -g3 -fno-inline -fno-eliminate-unused-debug-types -fno-omit-frame-pointer -Wno-unknown-pragmas -Wno-pragmas -Wall -Wextra -Wno-attributes -Waddress -Warray-bounds -Wchar-subscripts -Wcomment -Wctor-dtor-privacy -Wfloat-equal -Wformat=2 -Wformat-y2k -Wmissing-field-initializers -Wlogical-op -Wnon-virtual-dtor -Wnormalized=id -Woverloaded-virtual -Wpointer-arith -Wredundant-decls -Wshadow -Wsign-compare -Wstrict-overflow=1 -Wswitch-enum -Wundef -funsafe-loop-optimizations -Wclobbered -Wunused -Wunused-variable -Wunused-parameter -Wwrite-strings -Wformat-security -fwrapv -pipe -fPIE -pie -Wpacked
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>* CPP Flags: -fvisibility=hidden
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>* LIBS:
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>* LDFLAGS Flags: -lmcheck
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>* Assertions enabled: yes
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>* Debug enabled: yes
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>* Warnings as failure: no
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>* Building with libsqlite3 no
+<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>* Building with libdrizzle yes
+<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>* Building with libmemcached not found
+<a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>* Building with libpq no
+<a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a>* Building with tokyocabinet no
+<a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a>* Building with libmysql no
+<a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a>* SSL enabled: no
+<a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a>* cyassl found: no
+<a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a>* openssl found: no
+<a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a>* make -j: 2
+<a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a>* VCS checkout: no
+<a id="__codelineno-4-28" name="__codelineno-4-28" href="#__codelineno-4-28"></a>* sphinx-build: :
+<a id="__codelineno-4-29" name="__codelineno-4-29" href="#__codelineno-4-29"></a>
+<a id="__codelineno-4-30" name="__codelineno-4-30" href="#__codelineno-4-30"></a>---
+</code></pre></div></p>
+<ol>
+<li>make&amp;install，结果如下。</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>make[2]: Entering directory `/usr/servers/gearmand-1.1.12&#39;
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>make[2]: warning: -jN forced in submake: disabling jobserver mode.
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>/bin/mkdir -p &#39;/usr/local/lib&#39;
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>/bin/sh ./libtool --mode=install /usr/bin/install -c libgearman/libgearman. la &#39;/usr/local/lib&#39;
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>libtool: install: /usr/bin/install -c libgearman/.libs/libgearman.so.8.0.0 /usr/ local/lib/libgearman.so.8.0.0
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>libtool: install: (cd /usr/local/lib &amp;&amp; { ln -s -f libgearman.so.8.0.0 libgearma n.so.8 || { rm -f libgearman.so.8 &amp;&amp; ln -s libgearman.so.8.0.0 libgearman.so.8; }; })
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>libtool: install: (cd /usr/local/lib &amp;&amp; { ln -s -f libgearman.so.8.0.0 libgearma n.so || { rm -f libgearman.so &amp;&amp; ln -s libgearman.so.8.0.0 libgearman.so; }; })
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>libtool: install: /usr/bin/install -c libgearman/.libs/libgearman.lai /usr/local /lib/libgearman.la
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>libtool: install: /usr/bin/install -c libgearman/.libs/libgearman.a /usr/local/l ib/libgearman.a
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>libtool: install: chmod 644 /usr/local/lib/libgearman.a
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>libtool: install: ranlib /usr/local/lib/libgearman.a
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>libtool: finish: PATH=&quot;/usr/lib64/qt-3.3/bin:/usr/local/sbin:/usr/local/bin:/sbi n:/bin:/usr/sbin:/usr/bin:/root/bin:/sbin&quot; ldconfig -n /usr/local/lib
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>----------------------------------------------------------------------
+<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>Libraries have been installed in:
+<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>/usr/local/lib
+<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>
+<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>If you ever happen to want to link against installed libraries
+<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a>in a given directory, LIBDIR, you must either use libtool, and
+<a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a>specify the full pathname of the library, or use the `-LLIBDIR&#39;
+<a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a>flag during linking and do at least one of the following:
+<a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a>- add LIBDIR to the `LD_LIBRARY_PATH&#39; environment variable
+<a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a>during execution
+<a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a>- add LIBDIR to the `LD_RUN_PATH&#39; environment variable
+<a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a>during linking
+<a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a>- use the `-Wl,-rpath -Wl,LIBDIR&#39; linker flag
+<a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a>- have your system administrator add LIBDIR to `/etc/ld.so.conf&#39;
+<a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a>
+<a id="__codelineno-5-28" name="__codelineno-5-28" href="#__codelineno-5-28"></a>See any operating system documentation about shared libraries for
+<a id="__codelineno-5-29" name="__codelineno-5-29" href="#__codelineno-5-29"></a>more information, such as the ld(1) and ld.so(8) manual pages.
+<a id="__codelineno-5-30" name="__codelineno-5-30" href="#__codelineno-5-30"></a>----------------------------------------------------------------------
+<a id="__codelineno-5-31" name="__codelineno-5-31" href="#__codelineno-5-31"></a>/bin/mkdir -p &#39;/usr/local/bin&#39;
+<a id="__codelineno-5-32" name="__codelineno-5-32" href="#__codelineno-5-32"></a>/bin/sh ./libtool --mode=install /usr/bin/install -c bin/gearman bin/gearadm in &#39;/usr/local/bin&#39;
+<a id="__codelineno-5-33" name="__codelineno-5-33" href="#__codelineno-5-33"></a>libtool: install: /usr/bin/install -c bin/.libs/gearman /usr/local/bin/gearman
+<a id="__codelineno-5-34" name="__codelineno-5-34" href="#__codelineno-5-34"></a>libtool: install: /usr/bin/install -c bin/gearadmin /usr/local/bin/gearadmin
+<a id="__codelineno-5-35" name="__codelineno-5-35" href="#__codelineno-5-35"></a>/bin/mkdir -p &#39;/usr/local/sbin&#39;
+<a id="__codelineno-5-36" name="__codelineno-5-36" href="#__codelineno-5-36"></a>/bin/sh ./libtool --mode=install /usr/bin/install -c gearmand/gearmand &#39;/usr /local/sbin&#39;
+<a id="__codelineno-5-37" name="__codelineno-5-37" href="#__codelineno-5-37"></a>libtool: install: /usr/bin/install -c gearmand/gearmand /usr/local/sbin/gearmand
+<a id="__codelineno-5-38" name="__codelineno-5-38" href="#__codelineno-5-38"></a>/bin/mkdir -p &#39;/usr/local/share/man/man1&#39;
+<a id="__codelineno-5-39" name="__codelineno-5-39" href="#__codelineno-5-39"></a>/usr/bin/install -c -m 644 man/gearadmin.1 man/gearman.1 &#39;/usr/local/share/man/ man1&#39;
+<a id="__codelineno-5-40" name="__codelineno-5-40" href="#__codelineno-5-40"></a>/bin/mkdir -p &#39;/usr/local/share/man/man3&#39;
+<a id="__codelineno-5-41" name="__codelineno-5-41" href="#__codelineno-5-41"></a>/usr/bin/install -c -m 644 man/gearman_allocator_t.3 man/gearman_client_set_mem ory_allocators.3 man/gearman_worker_set_memory_allocators.3 man/gearman_actions_ t.3 man/gearman_argument_make.3 man/gearman_argument_t.3 man/gearman_bugreport.3 man/gearman_client_add_options.3 man/gearman_client_add_server.3 man/gearman_cl ient_add_servers.3 man/gearman_client_add_task.3 man/gearman_client_add_task_bac kground.3 man/gearman_client_add_task_high.3 man/gearman_client_add_task_high_ba ckground.3 man/gearman_client_add_task_low.3 man/gearman_client_add_task_low_bac kground.3 man/gearman_client_add_task_status.3 man/gearman_client_clear_fn.3 man /gearman_client_clone.3 man/gearman_client_context.3 man/gearman_client_create.3 man/gearman_client_do.3 man/gearman_client_do_background.3 man/gearman_client_d o_high.3 man/gearman_client_do_high_background.3 man/gearman_client_do_job_handl e.3 man/gearman_client_do_low.3 man/gearman_client_do_low_background.3 man/gearm an_client_do_status.3 man/gearman_client_echo.3 man/gearman_client_errno.3 man/g earman_client_error.3 man/gearman_client_free.3 man/gearman_client_job_status.3 man/gearman_client_options.3 man/gearman_client_remove_options.3 man/gearman_cli ent_remove_servers.3 man/gearman_client_run_tasks.3 man/gearman_client_set_compl ete_fn.3 man/gearman_client_set_context.3 &#39;/usr/local/share/man/man3&#39;
+<a id="__codelineno-5-42" name="__codelineno-5-42" href="#__codelineno-5-42"></a>/usr/bin/install -c -m 644 man/gearman_client_set_created_fn.3 man/gearman_clie nt_set_data_fn.3 man/gearman_client_set_exception_fn.3 man/gearman_client_set_fa il_fn.3 man/gearman_client_set_log_fn.3 man/gearman_client_set_namespace.3 man/g earman_client_set_options.3 man/gearman_client_set_status_fn.3 man/gearman_clien t_set_task_context_free_fn.3 man/gearman_client_set_timeout.3 man/gearman_client _set_warning_fn.3 man/gearman_client_set_workload_fn.3 man/gearman_client_set_wo rkload_free_fn.3 man/gearman_client_set_workload_malloc_fn.3 man/gearman_client_ st.3 man/gearman_client_task_free_all.3 man/gearman_client_timeout.3 man/gearman _client_wait.3 man/gearman_continue.3 man/gearman_execute.3 man/gearman_failed.3 man/gearman_job_free.3 man/gearman_job_free_all.3 man/gearman_job_function_name .3 man/gearman_job_handle.3 man/gearman_job_handle_t.3 man/gearman_job_send_comp lete.3 man/gearman_job_send_data.3 man/gearman_job_send_exception.3 man/gearman_ job_send_fail.3 man/gearman_job_send_status.3 man/gearman_job_send_warning.3 man /gearman_job_st.3 man/gearman_job_take_workload.3 man/gearman_job_unique.3 man/g earman_job_use_client.3 man/gearman_job_workload.3 man/gearman_job_workload_size .3 man/gearman_log_fn.3 man/gearman_parse_servers.3 &#39;/usr/local/share/man/man3&#39;
+<a id="__codelineno-5-43" name="__codelineno-5-43" href="#__codelineno-5-43"></a>/usr/bin/install -c -m 644 man/gearman_result_boolean.3 man/gearman_result_inte ger.3 man/gearman_result_is_null.3 man/gearman_result_size.3 man/gearman_result_ store_integer.3 man/gearman_result_store_string.3 man/gearman_result_store_value .3 man/gearman_result_string.3 man/gearman_return_t.3 man/gearman_strerror.3 man /gearman_string_t.3 man/gearman_success.3 man/gearman_task_context.3 man/gearman _task_data.3 man/gearman_task_data_size.3 man/gearman_task_denominator.3 man/gea rman_task_error.3 man/gearman_task_free.3 man/gearman_task_function_name.3 man/g earman_task_give_workload.3 man/gearman_task_is_known.3 man/gearman_task_is_runn ing.3 man/gearman_task_job_handle.3 man/gearman_task_numerator.3 man/gearman_tas k_recv_data.3 man/gearman_task_return.3 man/gearman_task_send_workload.3 man/gea rman_task_set_context.3 man/gearman_task_st.3 man/gearman_task_take_data.3 man/g earman_task_unique.3 man/gearman_verbose_name.3 man/gearman_verbose_t.3 man/gear man_version.3 man/gearman_worker_add_function.3 man/gearman_worker_add_options.3 man/gearman_worker_add_server.3 man/gearman_worker_add_servers.3 man/gearman_wo rker_clone.3 man/gearman_worker_context.3 &#39;/usr/local/share/man/man3&#39;
+<a id="__codelineno-5-44" name="__codelineno-5-44" href="#__codelineno-5-44"></a>/usr/bin/install -c -m 644 man/gearman_worker_create.3 man/gearman_worker_defin e_function.3 man/gearman_worker_echo.3 man/gearman_worker_errno.3 man/gearman_wo rker_error.3 man/gearman_worker_free.3 man/gearman_worker_function_exist.3 man/g earman_worker_grab_job.3 man/gearman_worker_options.3 man/gearman_worker_registe r.3 man/gearman_worker_remove_options.3 man/gearman_worker_remove_servers.3 man/ gearman_worker_set_context.3 man/gearman_worker_set_log_fn.3 man/gearman_worker_ set_namespace.3 man/gearman_worker_set_options.3 man/gearman_worker_set_timeout. 3 man/gearman_client_has_option.3 man/gearman_client_options_t.3 man/gearman_tas k_attr_init.3 man/gearman_task_attr_init_background.3 man/gearman_task_attr_init _epoch.3 man/gearman_task_attr_t.3 man/gearman_worker_set_identifier.3 man/gearm an_worker_set_workload_free_fn.3 man/gearman_worker_set_workload_malloc_fn.3 man /gearman_worker_st.3 man/gearman_worker_timeout.3 man/gearman_worker_unregister. 3 man/gearman_worker_unregister_all.3 man/gearman_worker_wait.3 man/gearman_work er_work.3 man/libgearman.3 &#39;/usr/local/share/man/man3&#39;
+<a id="__codelineno-5-45" name="__codelineno-5-45" href="#__codelineno-5-45"></a>/bin/mkdir -p &#39;/usr/local/share/man/man8&#39;
+<a id="__codelineno-5-46" name="__codelineno-5-46" href="#__codelineno-5-46"></a>/usr/bin/install -c -m 644 man/gearmand.8 &#39;/usr/local/share/man/man8&#39;
+<a id="__codelineno-5-47" name="__codelineno-5-47" href="#__codelineno-5-47"></a>/bin/mkdir -p &#39;/usr/local/include&#39;
+<a id="__codelineno-5-48" name="__codelineno-5-48" href="#__codelineno-5-48"></a>/bin/mkdir -p &#39;/usr/local/include/libgearman-1.0&#39;
+<a id="__codelineno-5-49" name="__codelineno-5-49" href="#__codelineno-5-49"></a>/usr/bin/install -c -m 644 libgearman-1.0/cancel.h libgearman-1.0/status.h lib gearman-1.0/actions.h libgearman-1.0/aggregator.h libgearman-1.0/allocator.h lib gearman-1.0/argument.h libgearman-1.0/client.h libgearman-1.0/client_callbacks.h libgearman-1.0/configure.h libgearman-1.0/connection.h libgearman-1.0/constants .h libgearman-1.0/core.h libgearman-1.0/execute.h libgearman-1.0/function.h libg earman-1.0/gearman.h libgearman-1.0/job.h libgearman-1.0/job_handle.h libgearman -1.0/kill.h libgearman-1.0/limits.h libgearman-1.0/ostream.hpp libgearman-1.0/pa rse.h libgearman-1.0/priority.h libgearman-1.0/protocol.h libgearman-1.0/result. h libgearman-1.0/return.h libgearman-1.0/signal.h libgearman-1.0/strerror.h libg earman-1.0/string.h libgearman-1.0/task.h libgearman-1.0/task_attr.h libgearman- 1.0/util.h libgearman-1.0/version.h libgearman-1.0/visibility.h libgearman-1.0/w orker.h &#39;/usr/local/include/libgearman-1.0&#39;
+<a id="__codelineno-5-50" name="__codelineno-5-50" href="#__codelineno-5-50"></a>/bin/mkdir -p &#39;/usr/local/include/libgearman&#39;
+<a id="__codelineno-5-51" name="__codelineno-5-51" href="#__codelineno-5-51"></a>/usr/bin/install -c -m 644 libgearman/gearman.h &#39;/usr/local/include/libgearman &#39;
+<a id="__codelineno-5-52" name="__codelineno-5-52" href="#__codelineno-5-52"></a>/bin/mkdir -p &#39;/usr/local/include/libgearman-1.0/interface&#39;
+<a id="__codelineno-5-53" name="__codelineno-5-53" href="#__codelineno-5-53"></a>/usr/bin/install -c -m 644 libgearman-1.0/interface/client.h libgearman-1.0/in terface/status.h libgearman-1.0/interface/task.h libgearman-1.0/interface/worker .h libgearman-1.0/interface/job.h &#39;/usr/local/include/libgearman-1.0/interface&#39;
+<a id="__codelineno-5-54" name="__codelineno-5-54" href="#__codelineno-5-54"></a>/bin/mkdir -p &#39;/usr/local/lib/pkgconfig&#39;
+<a id="__codelineno-5-55" name="__codelineno-5-55" href="#__codelineno-5-55"></a>/usr/bin/install -c -m 644 support/gearmand.pc &#39;/usr/local/lib/pkgconfig&#39;
+<a id="__codelineno-5-56" name="__codelineno-5-56" href="#__codelineno-5-56"></a>make[2]: Leaving directory `/usr/servers/gearmand-1.1.12&#39;
+<a id="__codelineno-5-57" name="__codelineno-5-57" href="#__codelineno-5-57"></a>make[1]: Leaving directory `/usr/servers/gearmand-1.1.12&#39;
+</code></pre></div>
+<ol>
+<li>创建一下log目录
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>mkdir -p /usr/local/var/log/
+</code></pre></div></li>
+</ol>
+<p>默认就在此目录下</p>
+<ol>
+<li>启动
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>gearmand --verbose<span class="o">=</span>INFO -d
+</code></pre></div></li>
+</ol>
+<p>启动gearmand守护，并打印level为INFO的log。gearmand的options可通过<code>gearmand -h</code>查看。</p>
+
+              
+
+<!-- Giscus -->
+<h2 id="__comments">Comments</h2>
+<!-- Replace with generated snippet -->
+<script src="https://giscus.app/client.js"
+        data-repo="twentwo/baijiu.yec"
+        data-repo-id="R_kgDOHOmq_Q"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOHOmq_c4COyOx"
+        data-mapping="pathname"
+        data-reactions-enabled="1"
+        data-emit-metadata="1"
+        data-input-position="bottom"
+        data-theme="light"
+        data-lang="en"
+        crossorigin="anonymous"
+        async>
+</script>
+
+<!-- Reload on palette change -->
+<script>
+    var palette = __md_get("__palette")
+    if (palette && typeof palette.color === "object")
+        if (palette.color.scheme === "slate") {
+            var giscus = document.querySelector("script[src*=giscus]")
+            giscus.setAttribute("data-theme", "dark")
+        }
+
+    /* Register event handlers after documented loaded */
+    document.addEventListener("DOMContentLoaded", function() {
+        var ref = document.querySelector("[data-md-component=palette]")
+        ref.addEventListener("change", function() {
+            var palette = __md_get("__palette")
+            if (palette && typeof palette.color === "object") {
+                var theme = palette.color.scheme === "slate" ? "dark" : "light"
+
+                /* Instruct Giscus to change theme */
+                var frame = document.querySelector(".giscus-frame")
+                frame.contentWindow.postMessage(
+                    { giscus: { setConfig: { theme } } },
+                    "https://giscus.app"
+                )
+            }
+        })
+    })
+</script>
+
+            </article>
+            
+          </div>
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Back to top
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+    <nav class="md-footer__inner md-grid" aria-label="Footer" >
+      
+        
+        <a href="../gearman-02/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Gearman（二）" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Gearman（二）
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../maven-remote-deploy-jboss/" class="md-footer__link md-footer__link--next" aria-label="Next: Maven 远程部署项目到jboss-as-7" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Maven 远程部署项目到jboss-as-7
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.code.annotate", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "toc.follow"], "search": "../../../assets/javascripts/workers/search.b97dbffb.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.6c7ad80a.min.js"></script>
+      
+        <script src="../../../javascripts/mathjax.js"></script>
+      
+        <script src="../../../javascripts/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
